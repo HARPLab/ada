@@ -40,12 +40,15 @@ class ControllerSwitcher(object):
         controller_infos_msg = self._mode_switcher._list_controllers_srv()
         controller_infos = controller_infos_msg.controller
 
-        # Figure out what resources the requested controllers need.
-        required_resources = set(sum([
-            controller_info.resources
-            for controller_info in controller_infos
-            if controller_info.name in self._requested_controllers
-        ], []))
+        # Figure out what resources the requested controllers need
+        import itertools
+        required_resources = set(
+            itertools.chain(
+                resource
+                for controller_info in controller_infos if controller_info.name in self._requested_controllers
+                for hw_resource in controller_info.claimed_resources
+                for resource in hw_resource.resources
+            ) )
 
         # Start any of the requested controllers that are not already running.
         start_controllers = [
@@ -61,8 +64,12 @@ class ControllerSwitcher(object):
             for controller_info in controller_infos
             if controller_info.name not in self._requested_controllers
             if controller_info.state == 'running'
-            if not required_resources.isdisjoint(controller_info.resources)
-        ]
+            if not required_resources.isdisjoint( itertools.chain(
+                    resource
+                    for hw_resource in controller_info.claimed_resources
+                    for resource in hw_resource.resources
+                ) ) ]
+        
 
         ok = self._mode_switcher._switch_controllers_srv(
             start_controllers=start_controllers,
