@@ -77,18 +77,16 @@ class TrajectoryFuture(Future):
 
         self._prev_state = state
 
-    def on_feedback(self, feedback_msg):
+    def on_feedback(self, goal, msg):
         """ Feedback callback for the FollowJointTrajectoryAction client.
 
         @param msg: feedback message
         @type msg: control_msgs.msg.FollowJointTrajectoryFeedback
         """
-        msg = feedback_msg.feedback
-
         with self.lock:
             if not self._traj_executed.header.stamp:
                 self._traj_executed.header.stamp = (msg.header.stamp
-                                                  - actual.time_from_start)
+                                                  - msg.actual.time_from_start)
 
             self._traj_executed.points.append(msg.actual)
 
