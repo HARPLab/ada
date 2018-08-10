@@ -4,7 +4,10 @@ import logging, prpy, openravepy, adapy
 URDF_PATH = 'package://ada_description/robots/mico.urdf'
 SRDF_PATH = 'package://ada_description/robots/mico.srdf'
 
-def initialize(env_path=None, attach_viewer=False, **kw_args):
+JACO_URDF_PATH = 'package://ada_description/robots/jaco.urdf'
+JACO_SRDF_PATH = 'package://ada_description/robots/jaco.srdf'
+
+def initialize(env_path=None, attach_viewer=False, robot='mico', **kw_args):
     from adarobot import ADARobot
     from util import AdaPyException, find_adapy_resource
 
@@ -20,8 +23,14 @@ def initialize(env_path=None, attach_viewer=False, **kw_args):
     # Use or_urdf to load ADA from URDF and SRDF.
     with env:
         or_urdf = openravepy.RaveCreateModule(env, 'urdf')
-        ada_name = or_urdf.SendCommand(
-            'load {:s} {:s}'.format(URDF_PATH, SRDF_PATH))
+        if robot == 'mico':
+            ada_name = or_urdf.SendCommand(
+                'load {:s} {:s}'.format(URDF_PATH, SRDF_PATH))
+        elif robot == 'jaco':
+            ada_name = or_urdf.SendCommand(
+                'load {:s} {:s}'.format(JACO_URDF_PATH, JACO_SRDF_PATH))
+        else:
+            raise RuntimeError('Unknown robot: {} (should be "jaco" or "mico")'.format(robot))
 
     robot = env.GetRobot(ada_name)
     if robot is None:
