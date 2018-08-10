@@ -172,7 +172,7 @@
     <parent link="mico_link_1"/>
     <child link="mico_link_2"/>
     <axis xyz="0 0 1"/>
-    <limit effort="2000" lower="0.820304748437" upper="5.46288055874" velocity="1"/>
+    <limit effort="2000" lower="-3.83" upper="0.784" velocity="1"/>
     <origin rpy="1.57079632679 -1.57079632679 0" xyz="0 0.0016 -0.11875"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
@@ -215,7 +215,7 @@
     <parent link="mico_link_2"/>
     <child link="mico_link_3"/>
     <axis xyz="0 0 -1"/>
-    <limit effort="2000" lower="0.331612557879" upper="5.9515727493" velocity="1"/>
+    <limit effort="2000" lower="-4.38805378" upper="1.233854435" velocity="1"/>
     <origin rpy="0 3.14159265359 -1.57079632679" xyz="0 -0.410 0"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
@@ -505,6 +505,8 @@
     <origin rpy="0 0 0" xyz="0.044 -0.003 0"/>
     <limit effort="2000" lower="0" upper="2" velocity="1"/>
   </joint>
+
+  <!--
   <link name="mico_link_finger_3">
     <visual>
       <geometry>
@@ -569,5 +571,6 @@
     <origin rpy="0 0 0" xyz="0.044 -0.003 0"/>
     <limit effort="2000" lower="0" upper="2" velocity="1"/>
   </joint>
+-->
 </robot>
 
