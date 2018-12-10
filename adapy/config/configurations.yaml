@@ -33,6 +33,12 @@ configurations:
     ada_meal_scenario_lookingAtPlateConfiguration:
         arm: [-1.2127471 , -1.34621355, -0.5601737,
               -2.24790503,  0.75088812,  4.50532945]
+    vpdemo_defaultConfiguration:
+        arm: [-0.7844357 , -1.58106281,  0.61888601,
+              -1.02934771,  1.9289855 ,  2.85480323]
+    vpdemo_readyToGrabConfiguration:
+        arm: [  1.711321220, -0.420611407,  0.718985850,
+                0.959137999, -1.12216727,   1.423236700 ]
     ada_meal_scenario_servingConfiguration:
         arm: [-0.7844357 , -1.58106281,  0.61888601,
               -1.02934771,  1.9289855 ,  2.85480323]
