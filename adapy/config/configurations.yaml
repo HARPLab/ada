@@ -13,9 +13,9 @@ configurations:
         arm: [-1.57368373, -1.91697478,  0.87587294,
               -1.56841653,  3.13802266,  3.14516262]
     rest:
-        arm: [  0.000000000,  0.000000000,  0.000000000, 
+        arm: [  0.000000000,  0.000000000,  0.000000000,
                 0.000000000,  0.000000000,  0.000000000 ]
-    ada_meal_scenario_start: 
+    ada_meal_scenario_start:
         arm: [  1.835483110, -1.746933270, -0.657385940,
                 0.980557800, -1.228077060,  1.555326420 ]
     ada_meal_scenario_readyToGraspConfiguration:
@@ -25,24 +25,24 @@ configurations:
 #        arm: [-0.3205117 , -1.47454649,  0.49087385,
 #              -0.7818282 ,  2.09558507,  2.43473431]
 #    ada_meal_scenario_lookingAtPlateConfiguration:
-#        arm: [-0.5380363 , -1.57079633, -0.27912432, 
+#        arm: [-0.5380363 , -1.57079633, -0.27912432,
 #              -2.33120445,  0.70090831,  5.55371706]
-#    ada_meal_scenario_morselStabbedConfiguration: 
+#    ada_meal_scenario_morselStabbedConfiguration:
 #        arm: [-1.70073355, -0.94132278,  0.8903104,
 #              -0.42006919,  1.1328773,   0.53549858]
     vpdemo_defaultConfiguration:
-        arm: [-0.7844357 , -1.58106281,  0.61888601,
-              -1.02934771,  1.9289855 ,  2.85480323]
+        arm: [-2.3792942168554743, -1.6112212479295365, 0.6188860136110614,
+              -1.0293477139903415, 1.9289855012981014, 2.8548032273857764]
     vpdemo_readyToGrabConfiguration:
-        arm: [  1.711321220, -0.420611407,  0.718985850,
-                0.959137999, -1.12216727,   1.423236700 ]
+        arm: [  -1.33209666, 0.155924886,  0.3599714,
+                1.14001737, 0.716378,   2.596573 ]
     ada_meal_scenario_lookingAtPlateConfiguration:
         arm: [-1.2127471 , -1.34621355, -0.5601737,
               -2.24790503,  0.75088812,  4.50532945]
     ada_meal_scenario_servingConfiguration:
         arm: [-0.7844357 , -1.58106281,  0.61888601,
               -1.02934771,  1.9289855 ,  2.85480323]
-    ada_meal_scenario_morselStabbedConfiguration: 
+    ada_meal_scenario_morselStabbedConfiguration:
         arm: [-1.71228368, -0.94003941,  0.5563237,
               -1.14358747,  1.36016678,  1.00735827]
     serve_a_snack_trial:
