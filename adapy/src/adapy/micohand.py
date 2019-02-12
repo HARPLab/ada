@@ -104,6 +104,7 @@ class MicoHand(EndEffector):
 
         @param timeout Blocking execution timeout, in seconds
         """
+        print("*******************************************")
         if self.simulated:
             robot = self.manipulator.GetRobot()
             p = openravepy.KinBody.SaveParameters
@@ -117,6 +118,7 @@ class MicoHand(EndEffector):
 
             return None
         else:
+            print("##########################")
             num_dofs = len(self.GetIndices())
             if num_dofs == 2:
                 return self.MoveHand(f1=value, f2=value, timeout=timeout)

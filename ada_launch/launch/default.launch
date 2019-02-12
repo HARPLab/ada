@@ -10,13 +10,13 @@
           output="screen" />
 
    <!-- load controllers -->
-   <rosparam file="$(find ada_launch)/config/controllers.yaml" command="load" />
+   <rosparam file="/home/sarthak/catkin_ws/src/ada/ada_launch/config/controllers.yaml" command="load" />
    
-   <node name="controller_spawner_started" pkg="controller_manager" type="spawner" respawn="false"
+   <node name="controller_spawner_started" pkg="controller_manager" type="spawner" respawn="true"
       output="screen"
       args="
          joint_state_controller" />
-   <node name="controller_spawner_stopped" pkg="controller_manager" type="spawner" respawn="false"
+   <node name="controller_spawner_stopped" pkg="controller_manager" type="spawner" respawn="true"
       output="screen"
       args="
          --stopped
@@ -52,7 +52,7 @@
 
    <!-- Camera Transform -->
 <!--
-   <node name="static_transform" pkg="tf" type="static_transform_publisher" respawn="false" output="screen" 
+   <node name="static_transform" pkg="tf" type="static_transform_publisher" respawn="true" output="screen" 
       args="0.0473 0.0541 -0.09 -0.6947 0.7030 -0.1396 0.0619 Hand_Link /base_rgbd_camera_link 10"/>
 -->
 
