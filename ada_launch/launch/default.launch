@@ -10,7 +10,7 @@
           output="screen" />
 
    <!-- load controllers -->
-   <rosparam file="/home/sarthak/catkin_ws/src/ada/ada_launch/config/controllers.yaml" command="load" />
+   <rosparam file="$(find ada_launch)/config/controllers.yaml" command="load" />
    
    <node name="controller_spawner_started" pkg="controller_manager" type="spawner" respawn="true"
       output="screen"
