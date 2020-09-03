@@ -123,7 +123,7 @@ class Future(object):
         @type  fn: function 
         """
         with self.lock:
-            if self._is_done:
+            if not self._is_done:
                 if fn in self._callbacks:
                     raise ValueError('Callback is already registered.')
 
