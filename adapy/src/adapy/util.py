@@ -139,3 +139,27 @@ def pad_ros_trajectory(robot, traj_ros, joint_names):
 
     traj_ros.joint_names.extend(missing_names)
     return traj_ros
+
+
+
+def publish_joint_state_once(robot, pub=None, topic='/joint_states'):
+    import rospy
+    import sensor_msgs.msg
+
+    if not robot.simulated:
+        raise RuntimeError('Refusing to publish joints of a real robot')
+    if pub is None:
+        pub = rospy.Publisher(topic, sensor_msgs.msg.JointState, queue_size=1)
+    msg = sensor_msgs.msg.JointState()
+    msg.header.stamp = rospy.get_rostime()
+    msg.name = [ j.GetName() for j in robot.GetJoints() ]
+    msg.position = robot.GetDOFValues()
+    msg.velocity = robot.GetDOFVelocities()
+    msg.effort = [ 0. ] * len(msg.name)
+    pub.publish(msg)
+
+def publish_joint_states(robot, topic='/joint_states', rate=50.):
+    import rospy
+    import sensor_msgs.msg
+    pub = rospy.Publisher(topic, sensor_msgs.msg.JointState, queue_size=1)
+    return rospy.Timer(rospy.Duration(1./rate, ), lambda _: publish_joint_state_once(robot, pub))   
