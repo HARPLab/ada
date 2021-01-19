@@ -205,7 +205,6 @@ class ControllerPauser(object):
         
 
         ok = self._mode_switcher._switch_controllers_srv(
-            start_controllers=[],
             stop_controllers=stop_controllers,
             strictness=SwitchControllerRequest.STRICT
         )
@@ -219,11 +218,10 @@ class ControllerPauser(object):
         from controller_manager_msgs.srv import SwitchControllerRequest
         
         if self._stopped_controllers is None:
-            raise raise adapy.controller_client.ROSControlError('Unknown state. Did you call __enter__?')
+            raise adapy.controller_client.ROSControlError('Unknown state. Did you call __enter__?')
 
         ok = self._mode_switcher._switch_controllers_srv(
             start_controllers=self._stopped_controllers,
-            stop_controllers=[]],
             strictness=SwitchControllerRequest.STRICT
         )
 
