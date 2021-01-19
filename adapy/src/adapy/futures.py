@@ -9,6 +9,9 @@ class TimeoutError(FutureError):
 class CancelledError(FutureError):
     pass
 
+class InternalError(FutureError):
+    pass
+
 
 class Future(object):
     import logging
@@ -64,7 +67,8 @@ class Future(object):
         @returns: the result of the call wrapped by the future
         """
         with self.lock:
-            self._condition.wait(timeout)
+            if not self._is_done:
+                self._condition.wait(timeout)
 
             if not self._is_done:
                 raise TimeoutError()
@@ -92,7 +96,8 @@ class Future(object):
         @type  timeout: float 
         """
         with self.lock:
-            self._condition.wait(timeout)
+            if not self._is_done:
+                self._condition.wait(timeout)
 
             if not self._is_done:
                 raise TimeoutError()
