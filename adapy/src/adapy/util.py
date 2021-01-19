@@ -1,5 +1,6 @@
 import logging
 from prpy.exceptions import PrPyException
+import adapy.controller_client
 
 logger = logging.getLogger('adapy.util')
 
@@ -163,3 +164,85 @@ def publish_joint_states(robot, topic='/joint_states', rate=50.):
     import sensor_msgs.msg
     pub = rospy.Publisher(topic, sensor_msgs.msg.JointState, queue_size=1)
     return rospy.Timer(rospy.Duration(1./rate, ), lambda _: publish_joint_state_once(robot, pub))   
+
+
+
+class ControllerPauser(object):
+    def __init__(self, mode_switcher, controller_names):
+        """ Construct a context manager for stopping all current controllers.
+
+        @param mode_switcher: mode switcher object
+        @type  mode_switcher: ModeSwitcher
+        """
+        self._mode_switcher = mode_switcher
+        self._stopped_controllers = None
+
+    def __enter__(self):
+        self._stopped_controllers = self.switch()
+
+    def __exit__(self, type, value, tb):
+        self.unswitch()
+
+    def switch(self):
+        """ Switch to the requested controllers.
+
+        Any controllers that conflict with the resources used by the requested
+        controllers are unloaded. This operation is performed atomically.
+
+        @return tuple containing the loaded and unloaded controllers
+        @rtype  [str], [str]
+        """
+        from controller_manager_msgs.srv import SwitchControllerRequest
+
+        controller_infos_msg = self._mode_switcher._list_controllers_srv()
+        controller_infos = controller_infos_msg.controller
+
+        # Stop all running controllers.
+        stop_controllers = [
+            controller_info.name
+            for controller_info in controller_infos
+            if controller_info.state == 'running' ]
+        
+
+        ok = self._mode_switcher._switch_controllers_srv(
+            start_controllers=[],
+            stop_controllers=stop_controllers,
+            strictness=SwitchControllerRequest.STRICT
+        )
+        if ok:
+            return stop_controllers
+        else:
+            raise adapy.controller_client.SwitchError('Switching controllers failed.')
+
+    def unswitch(self):
+        """ Reverts to the controllers loaded before switch() was called. """
+        from controller_manager_msgs.srv import SwitchControllerRequest
+        
+        if self._stopped_controllers is None:
+            raise raise adapy.controller_client.ROSControlError('Unknown state. Did you call __enter__?')
+
+        ok = self._mode_switcher._switch_controllers_srv(
+            start_controllers=self._stopped_controllers,
+            stop_controllers=[]],
+            strictness=SwitchControllerRequest.STRICT
+        )
+
+        self._started_controllers = None
+
+        if not ok:
+            raise adapy.controller_client.SwitchError('Reverting controllers failed.')
+
+class EmptyContext:
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, tb):
+        pass
+
+def pause_controls(robot):
+    if robot.sim:
+        return EmptyContext()
+    else:
+        return ControllerPauser(robot._controller_client)
+
+
