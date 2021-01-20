@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import adapy
-import adapy.util
+import openravepy
+import rospy
+
 
 # python 2/3 compliance
 try:
@@ -11,7 +13,10 @@ except NameError:
 
 
 if __name__ == "__main__":
-    env, robot = adapy.initialize()
+    rospy.init_node("pauser", anonymous=True)
+    openravepy.RaveInitialize(True)
+
+    env, robot = adapy.initialize(sim=False)
     with adapy.util.pause_controls(robot):
         input("Robot control is paused; you can now move the robot with the built-in joystick. Press <enter> to return to previous control mode.")
         

@@ -168,7 +168,7 @@ def publish_joint_states(robot, topic='/joint_states', rate=50.):
 
 
 class ControllerPauser(object):
-    def __init__(self, mode_switcher, controller_names):
+    def __init__(self, mode_switcher):
         """ Construct a context manager for stopping all current controllers.
 
         @param mode_switcher: mode switcher object
@@ -201,7 +201,10 @@ class ControllerPauser(object):
         stop_controllers = [
             controller_info.name
             for controller_info in controller_infos
-            if controller_info.state == 'running' ]
+            if controller_info.state == 'running' and any(
+                r.resources for r in controller_info.claimed_resources)
+	]
+        logger.info("Stopping controllers: {}".format(stop_controllers))
         
 
         ok = self._mode_switcher._switch_controllers_srv(
@@ -238,7 +241,7 @@ class EmptyContext:
         pass
 
 def pause_controls(robot):
-    if robot.sim:
+    if robot.simulated:
         return EmptyContext()
     else:
         return ControllerPauser(robot._controller_client)
