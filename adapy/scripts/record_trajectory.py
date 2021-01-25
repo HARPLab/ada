@@ -75,6 +75,7 @@ def main():
     rospy.init_node("traj_recorder", anonymous=True)
 
     env, robot = adapy.initialize(attach_viewer=args.viewer, sim=not args.real)
+    robot.SetActiveDOFs(robot.arm.GetIndices())
     teleop_thread = None
 
     if args.enable_teleop_control:
