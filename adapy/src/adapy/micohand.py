@@ -39,13 +39,17 @@ class MicoHand(EndEffector):
 
         #store names of finger controllers
         num_dofs = len(self.GetIndices())
-        self.velocity_controller_names = ['vel_f' + str(i) + '_controller' for i in range(1,num_dofs+1)]
-        self.velocity_topic_names = [controller_name + '/command' for controller_name in self.velocity_controller_names]
 
-        self.velocity_publishers = [rospy.Publisher(topic_name, Float64, queue_size=1) for topic_name in self.velocity_topic_names]
-        self.velocity_publisher_lock = threading.Lock()
+        # don't use rospy if we're simulated
+        if not self.simulated:
+            self.velocity_controller_names = ['vel_f' + str(i) + '_controller' for i in range(1,num_dofs+1)]
+            self.velocity_topic_names = [controller_name + '/command' for controller_name in self.velocity_controller_names]
 
-        self.servo_watchdog = Watchdog(timeout_duration=0.25, handler=self.SendVelocitiesToMico, args=[[0.]*num_dofs])
+            self.velocity_publishers = [rospy.Publisher(topic_name, Float64, queue_size=1) for topic_name in self.velocity_topic_names]
+            self.velocity_publisher_lock = threading.Lock()
+
+            self.servo_watchdog = Watchdog(timeout_duration=0.25, handler=self.SendVelocitiesToMico, args=[[0.]*num_dofs])
+
 
     def CloneBindings(self, parent):
         super(MicoHand, self).CloneBindings(parent)
